@@ -1,0 +1,81 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="experimental.metadatachecker"
+>
+  <body>
+    <metal:content-core fill-slot="content-core">
+      <metal:block define-macro="content-core">
+
+        <h2 i18n:translate="">List mat2 safe objects</h2>
+
+        <div class="has-table"
+             tal:define="
+               Batch python:modules['Products.CMFPlone'].Batch;
+               b_size python:int(request.get('b_size', 20));
+               b_start python:int(request.get('b_start', 0));
+               results python:view.results;
+               batch python:Batch(results, b_size, b_start);
+             "
+        >
+          <table class="listing"
+                 summary="Content listing"
+                 i18n:attributes="summary summary_content_listing;"
+          >
+            <thead>
+              <tr>
+                <th class="nosort"
+                    i18n:translate=""
+                >Title</th>
+                <th class="nosort"
+                    i18n:translate=""
+                >Status</th>
+                <th class="nosort"
+                    i18n:translate=""
+                >Clean</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tal:entries tal:repeat="item batch">
+                <tal:block tal:define="
+                             status item/mat2_status;
+                           ">
+                  <tr metal:define-macro="listitem"
+                      tal:define="
+                        oddrow repeat/item/odd;
+                      "
+                      tal:attributes="
+                        class python: oddrow and 'even' or 'odd';
+                      "
+                  >
+                    <td>
+                      <a href="${item/getURL}/@@mat2-view">${item/Title}</a>
+                    </td>
+                    <td>
+                        ${python: view.get_status_hr(item)}
+                    </td>
+                    <td>
+                      <form action="${item/getURL}/@@mat2-clean"
+                            method="post"
+                            tal:condition="python: status == 100"
+                      >
+                        <input name="clean"
+                               type="submit"
+                               value="Clean"
+                               i18n:attributes="value"
+                        />
+                      </form>
+                    </td>
+                  </tr>
+                </tal:block>
+              </tal:entries>
+            </tbody>
+          </table>
+          <div metal:use-macro="context/batch_macros/macros/navigation"></div>
+        </div>
+      </metal:block>
+    </metal:content-core>
+  </body>
+</html>

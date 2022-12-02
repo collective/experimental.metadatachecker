@@ -1,0 +1,6 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+  <adapter
+      factory=".indexers.mat2_status"
+      name="mat2_status"
+      />
+</configure>

@@ -1,0 +1,51 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="experimental.metadatachecker"
+    >
+
+  <browser:page
+      name="mat2-listing"
+      for="*"
+      class=".mat2_listing.Mat2Listing"
+      template="templates/mat2_listing.pt"
+      permission="cmf.ManagePortal"
+      layer="experimental.metadatachecker.interfaces.IExperimentalMetadataCheckerLayer"
+      />
+
+  <browser:page
+      name="mat2-autoclean"
+      for="*"
+      class=".mat2_listing.Mat2Autoclean"
+      permission="cmf.ManagePortal"
+      layer="experimental.metadatachecker.interfaces.IExperimentalMetadataCheckerLayer"
+      />
+
+  <browser:page
+      name="metadatachecker-view"
+      for="*"
+      class=".exiftool_view.ExiftoolView"
+      template="templates/exiftool_view.pt"
+      permission="cmf.ModifyPortalContent"
+      layer="experimental.metadatachecker.interfaces.IExperimentalMetadataCheckerLayer"
+      />
+
+  <browser:page
+      name="mat2-view"
+      for="*"
+      class=".mat2_view.Mat2View"
+      template="templates/mat2_view.pt"
+      permission="cmf.ModifyPortalContent"
+      layer="experimental.metadatachecker.interfaces.IExperimentalMetadataCheckerLayer"
+      />
+
+  <browser:page
+      name="mat2-clean"
+      for="*"
+      class=".mat2_view.Mat2Clean"
+      permission="cmf.ManagePortal"
+      layer="experimental.metadatachecker.interfaces.IExperimentalMetadataCheckerLayer"
+      />
+
+</configure>

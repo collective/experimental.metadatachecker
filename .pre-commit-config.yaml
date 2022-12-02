@@ -1,0 +1,35 @@
+repos:
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.2.3
+    hooks:
+      - id: pyupgrade
+        args:
+          - --py38-plus
+  - repo: https://github.com/ambv/black
+    rev: 22.10.0
+    hooks:
+      - id: black
+  - repo: https://github.com/pycqa/isort
+    rev: 5.10.1
+    hooks:
+      - id: isort
+  - repo: https://github.com/PyCQA/flake8
+    rev: 6.0.0
+    hooks:
+      - id: flake8
+  - repo: https://github.com/collective/zpretty
+    rev: 2.4.1
+    hooks:
+      - id: zpretty
+  - repo: https://github.com/myint/docformatter
+    rev: v1.5.0
+    hooks:
+      - id: docformatter
+  - repo: https://github.com/myint/rstcheck
+    rev: v6.0.0.post1
+    hooks:
+      - id: rstcheck
+        name: rstcheck
+#        entry: rstcheck --ignore-messages "Duplicate explicit target name"
+        language: python
+        types: [rst] 
