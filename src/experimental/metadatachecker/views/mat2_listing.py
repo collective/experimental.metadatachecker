@@ -3,8 +3,10 @@ from logging import getLogger
 from plone import api
 from plone.protect.interfaces import IDisableCSRFProtection
 from Products.Five.browser import BrowserView
+from transaction import commit
 from zope.interface import alsoProvides
 from zope.interface import Interface
+
 
 import Missing
 
@@ -69,5 +71,6 @@ class Mat2Autoclean(BrowserView):
             except Exception:
                 logger.error("Can't fix %r", brain.getPath())
             else:
+                commit()
                 logger.info("Fixed %r", brain.getPath())
         return "OK"
