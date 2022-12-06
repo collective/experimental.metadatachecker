@@ -51,7 +51,7 @@
                       "
                   >
                     <td>
-                      <a href="${item/getURL}/@@mat2-view">${item/Title}</a>
+                      <a href="${item/getURL}/@@mat2-view">${python: item.Title or item.getId}</a>
                     </td>
                     <td>
                         ${python: view.get_status_hr(item)}
