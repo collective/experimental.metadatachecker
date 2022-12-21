@@ -1,4 +1,4 @@
-from experimental.metadatachecker import MAT2_STATUS
+from experimental.metadatachecker import MAT2_STATUS, _
 from logging import getLogger
 from plone import api
 from plone.protect.interfaces import IDisableCSRFProtection
@@ -6,7 +6,11 @@ from Products.Five.browser import BrowserView
 from transaction import commit
 from zope.interface import alsoProvides
 from zope.interface import Interface
+from zope import schema
 
+from plone.autoform.form import AutoExtensibleForm
+from z3c.form import form
+from z3c.form import button
 
 import Missing
 
@@ -17,8 +21,28 @@ logger = getLogger(__name__)
 class IListMat2SafeView(Interface):
     """Marker Interface for IListMat2SafeView."""
 
+    mat2_status = schema.Choice(
+        title=_("Status"),
+        vocabulary="mat2.statuses",
+        default=100,  # Not clean
+    )
 
-class Mat2Listing(BrowserView):
+    SearchableText = schema.TextLine(
+        title=_("Searchable text"),
+        required=-False,
+    )
+
+class Mat2Listing(AutoExtensibleForm, form.Form):
+
+    label = _("List mat2 safe objects")
+    schema = IListMat2SafeView
+    ignoreContext = True
+
+    @property
+    def template(self):
+        """Use the template declared in the zcml"""
+        return self.index
+
     def get_status_hr(self, brain):
         """Get the human readable status for the given code."""
         if brain.mat2_status == Missing.Value:
@@ -31,18 +55,27 @@ class Mat2Listing(BrowserView):
     def results(self):
         """Return a list of files with a statement telling if they are safe or
         not."""
-        mat2_status = self.request.get("mat2_status", None)
         kwargs = {
             "context": self.context,
             "sort_on": "sortable_title",
         }
-
-        if mat2_status is not None:
-            kwargs["mat2_status"] = mat2_status
-
+        # Extend the search arguments with the form data
+        data = self.extractData()[0]
+        if not data.get("mat2_status"):
+            data["mat2_status"] = 100
+        if not data.get("SearchableText"):
+            del data["SearchableText"]
+        kwargs.update(data)
         brains = api.content.find(**kwargs)
         return brains
 
+    @button.buttonAndHandler(_("Search"), name="search")
+    def handle_search(self, action):
+        errors = self.extractData()[1]
+
+        if errors:
+            self.status = self.formErrorsMessage
+            return
 
 class Mat2Autoclean(BrowserView):
     @property
