@@ -1,16 +1,16 @@
-from experimental.metadatachecker import MAT2_STATUS, _
+from experimental.metadatachecker import _
+from experimental.metadatachecker import MAT2_STATUS
 from logging import getLogger
 from plone import api
+from plone.autoform.form import AutoExtensibleForm
 from plone.protect.interfaces import IDisableCSRFProtection
 from Products.Five.browser import BrowserView
 from transaction import commit
+from z3c.form import button
+from z3c.form import form
+from zope import schema
 from zope.interface import alsoProvides
 from zope.interface import Interface
-from zope import schema
-
-from plone.autoform.form import AutoExtensibleForm
-from z3c.form import form
-from z3c.form import button
 
 import Missing
 
@@ -32,15 +32,15 @@ class IListMat2SafeView(Interface):
         required=-False,
     )
 
-class Mat2Listing(AutoExtensibleForm, form.Form):
 
+class Mat2Listing(AutoExtensibleForm, form.Form):
     label = _("List mat2 safe objects")
     schema = IListMat2SafeView
     ignoreContext = True
 
     @property
     def template(self):
-        """Use the template declared in the zcml"""
+        """Use the template declared in the zcml."""
         return self.index
 
     def get_status_hr(self, brain):
@@ -76,6 +76,7 @@ class Mat2Listing(AutoExtensibleForm, form.Form):
         if errors:
             self.status = self.formErrorsMessage
             return
+
 
 class Mat2Autoclean(BrowserView):
     @property

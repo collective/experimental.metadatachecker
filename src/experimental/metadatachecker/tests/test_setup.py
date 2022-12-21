@@ -43,7 +43,6 @@ class TestSetup(unittest.TestCase):
 
 
 class TestUninstall(unittest.TestCase):
-
     layer = testing.EXPERIMENTAL_METADATA_CHECKER_INTEGRATION_TESTING
 
     def setUp(self):
