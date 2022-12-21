@@ -7,7 +7,6 @@ from zope.schema.vocabulary import SimpleVocabulary
 
 @implementer(IVocabularyFactory)
 class StatusesVocabulary:
-
     voc = SimpleVocabulary(
         [
             SimpleTerm(value=key, token=key, title=value)

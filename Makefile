@@ -13,6 +13,10 @@ buildout_cfgs := $(wildcard *.cfg config/*.cfg profiles/*.cfg)
 .installed.cfg: py3/bin/buildout $(buildout_cfgs)
 	./py3/bin/buildout
 
+.PHONY: test
+test: all
+	./bin/test
+
 .PHONY: clean
 clean:
 	rm -rf ./py3
